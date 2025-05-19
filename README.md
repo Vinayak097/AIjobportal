@@ -5,7 +5,7 @@ A full-stack application that uses AI to recommend job matches based on user pro
 ## Live Demo
 
 - **Frontend**: [https://ai-job-portal.vercel.app](https://ai-job-portal.vercel.app)
-- **Backend API**: [https://ai-job-recommender-api.onrender.com](https://ai-job-recommender-api.onrender.com)
+- **Backend API**: [https://aijobportal.onrender.com](https://aijobportal.onrender.com)
 - **GitHub Repository**: [https://github.com/Vinayak097/AIjobportal](https://github.com/Vinayak097/AIjobportal)
 
 ## Features
@@ -203,7 +203,7 @@ The system also includes intelligent response parsing that can handle various fo
 2. Click "New" and select "Web Service"
 3. Connect your GitHub repository
 4. Configure the service:
-   - Name: ai-job-recommender-api
+   - Name: aijobportal
    - Root Directory: backend
    - Runtime: Node
    - Build Command: npm install
