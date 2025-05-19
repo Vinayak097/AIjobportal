@@ -15,12 +15,32 @@ console.log("MONGODB_URI:", process.env.MONGODB_URI ? "Set" : "Not set");
 console.log("JWT_SECRET:", process.env.JWT_SECRET ? "Set" : "Not set");
 console.log("GEMINI_API_KEY:", process.env.GEMINI_API_KEY ? "Set" : "Not set");
 
-// Initialize Express app
+
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://ai-job-portal.vercel.app',
+    'https://aijobportal.vercel.app'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(express.json());
+
+// Add headers for CORS preflight requests
+app.options('*', cors());
+
+// Add custom headers middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-auth-token');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ai-job-recommender')
