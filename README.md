@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI-Powered Job Match Platform
+
+A full-stack application that uses AI to recommend job matches based on user profiles.
+
+## Features
+
+- **User Authentication**: Sign up, log in, and log out functionality with JWT
+- **User Profile Management**: Create and update your profile with skills, experience, and preferences
+- **Job Listings**: Browse available job opportunities
+- **AI Job Recommendations**: Get personalized job recommendations based on your profile
+
+## Tech Stack
+
+### Frontend
+- **Next.js**: React framework for building the user interface
+- **Tailwind CSS**: Utility-first CSS framework for styling
+- **TypeScript**: Type-safe JavaScript
+
+### Backend
+- **Node.js**: JavaScript runtime for the server
+- **Express**: Web framework for Node.js
+- **MongoDB**: NoSQL database for storing user profiles and job listings
+- **JWT**: JSON Web Tokens for authentication
+- **Google Gemini API**: For AI-powered job recommendations using free tier models (with automatic fallback algorithm)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB (local or Atlas)
+- Google Gemini API key
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Installation
+
+1. Clone the repository
+```
+git clone <repository-url>
+cd ai-job-recommender
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies for both frontend and backend
+```
+# Install frontend dependencies
+npm install
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Install backend dependencies
+cd backend
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Set up environment variables
 
-## Learn More
+   Create a `.env` file in the backend directory with the following variables:
+   ```
+   PORT=5000
+   MONGODB_URI=<your-mongodb-connection-string>
+   JWT_SECRET=<your-jwt-secret>
+   GEMINI_API_KEY=<your-gemini-api-key>
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Seed the database with sample jobs
+```
+cd backend
+node utils/seedJobs.js
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. Start the development servers
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   In one terminal (for the backend):
+   ```
+   cd backend
+   npm run dev
+   ```
 
-## Deploy on Vercel
+   In another terminal (for the frontend):
+   ```
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+6. Open your browser and navigate to `http://localhost:3000`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## AI Job Recommendation Feature
+
+The job recommendation feature works as follows:
+
+1. When a user clicks the "Find My Matches" button, the frontend sends a request to the backend API.
+2. The backend retrieves the user's profile data (skills, experience, location, etc.) and the list of available jobs.
+3. The backend constructs a prompt for the Google Gemini API that includes:
+   - The user's profile information
+   - Details about all available jobs
+   - Instructions to recommend the top 3 most suitable jobs based on the user's profile
+4. The Gemini API analyzes the data and returns recommendations with explanations for why each job is a good match.
+5. The backend processes the AI response and sends the recommendations back to the frontend.
+6. The frontend displays the recommended jobs with explanations to the user.
+
+### Fallback Mechanism
+
+The system implements a robust approach to ensure reliable job recommendations:
+
+1. **Primary Method**: First attempts to use the Gemini API with the model "gemini-2.0-flash" (free tier) using the direct URL query parameter approach
+2. **Secondary Method**: If the first attempt fails, tries with an alternative model "gemini-1.5-flash"
+3. **Tertiary Method**: If the second attempt fails, tries with a third model option "gemini-2.0-flash-lite"
+4. **Fallback Algorithm**: If all API attempts fail, automatically switches to a custom matching algorithm that:
+   - Calculates skill match percentage between user skills and job requirements
+   - Evaluates job type compatibility with user preferences
+   - Assesses experience level suitability
+   - Combines these factors into a weighted match score
+
+This multi-layered approach ensures that users always receive personalized job recommendations, even if there are temporary issues with the AI service or API changes.
+
+The system also includes intelligent response parsing that can handle various formats returned by the Gemini API, including responses formatted as markdown code blocks.
