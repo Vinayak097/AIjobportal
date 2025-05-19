@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import config from '@/config';
+import { ApiError } from '@/types/error';
+
 
 interface Job {
   _id: string;
@@ -54,8 +55,9 @@ export default function JobsPage() {
 
         const jobsData = await response.json();
         setJobs(jobsData);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        const error = err as Error | ApiError;
+        setError(error.message || 'Failed to fetch jobs');
       } finally {
         setLoading(false);
       }
@@ -87,8 +89,9 @@ export default function JobsPage() {
 
       const recommendationsData = await response.json();
       setRecommendations(recommendationsData);
-    } catch (err: any) {
-      setRecommendationError(err.message);
+    } catch (err) {
+      const error = err as Error | ApiError;
+      setRecommendationError(error.message || 'Failed to get recommendations');
     } finally {
       setLoadingRecommendations(false);
     }
@@ -148,7 +151,7 @@ export default function JobsPage() {
                         {job.jobType}
                       </span>
                     </div>
-                    <p className="mt-1 max-w-2xl text-sm text-gray-500">{job.company} • {job.location}</p>
+                    <p className="mt-1 max-w-2xl text-sm text-gray-500">{job.company} &bull; {job.location}</p>
                     <div className="mt-3">
                       <h4 className="text-sm font-medium text-gray-500">Skills</h4>
                       <div className="mt-1 flex flex-wrap gap-1">
@@ -160,7 +163,7 @@ export default function JobsPage() {
                       </div>
                     </div>
                     <div className="mt-4 pt-4 border-t border-gray-200">
-                      <h4 className="text-sm font-medium text-gray-500">Why it's a match</h4>
+                      <h4 className="text-sm font-medium text-gray-500">Why it&apos;s a match</h4>
                       <p className="mt-1 text-sm text-gray-900">{job.reason}</p>
                     </div>
                   </div>
@@ -181,7 +184,7 @@ export default function JobsPage() {
                       {job.jobType}
                     </span>
                   </div>
-                  <p className="mt-1 max-w-2xl text-sm text-gray-500">{job.company} • {job.location}</p>
+                  <p className="mt-1 max-w-2xl text-sm text-gray-500">{job.company} &bull; {job.location}</p>
                   <p className="mt-3 text-sm text-gray-500 line-clamp-3">{job.description}</p>
                   <div className="mt-3">
                     <h4 className="text-sm font-medium text-gray-500">Skills</h4>

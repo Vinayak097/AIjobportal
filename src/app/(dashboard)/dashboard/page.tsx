@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import config from '@/config';
+import { ApiError } from '@/types/error';
+
 
 interface User {
   _id: string;
@@ -39,8 +41,9 @@ export default function Dashboard() {
 
         const userData = await response.json();
         setUser(userData);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        const error = err as Error | ApiError;
+        setError(error.message || 'Failed to load user data');
       } finally {
         setLoading(false);
       }

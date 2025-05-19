@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import config from '@/config';
+import { ApiError } from '@/types/error';
 
 interface User {
   _id: string;
@@ -58,8 +59,9 @@ export default function ProfilePage() {
           skills: userData.skills.join(', '),
           preferredJobType: userData.preferredJobType
         });
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        const error = err as Error | ApiError;
+        setError(error.message || 'Failed to fetch user data');
       } finally {
         setLoading(false);
       }
@@ -113,8 +115,9 @@ export default function ProfilePage() {
       }
 
       setSuccess('Profile updated successfully!');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const error = err as Error | ApiError;
+      setError(error.message || 'Failed to update profile');
     } finally {
       setUpdating(false);
     }

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import config from '@/config';
+import { ApiError } from '@/types/error';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -64,8 +65,9 @@ export default function RegisterPage() {
 
       // Redirect to dashboard
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const error = err as Error | ApiError;
+      setError(error.message || 'An error occurred during registration');
     } finally {
       setLoading(false);
     }
