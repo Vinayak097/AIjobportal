@@ -22,7 +22,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://ai-job-portal.vercel.app',
+    
     'https://aijobportal.vercel.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],

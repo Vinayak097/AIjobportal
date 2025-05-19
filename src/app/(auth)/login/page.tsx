@@ -117,6 +117,10 @@ export default function LoginPage() {
             </button>
           </div>
         </form>
+        <div>
+          <p>email: vinayak75score@gmail.com</p>
+          <p>oass: passvi</p>
+        </div>
       </div>
     </div>
   );
