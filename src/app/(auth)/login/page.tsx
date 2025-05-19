@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import config from '@/config';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${config.apiUrl}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -41,7 +42,7 @@ export default function LoginPage() {
 
       // Save token to localStorage
       localStorage.setItem('token', data.token);
-      
+
       // Redirect to dashboard
       router.push('/dashboard');
     } catch (err: any) {
@@ -65,13 +66,13 @@ export default function LoginPage() {
             </Link>
           </p>
         </div>
-        
+
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             <span className="block sm:inline">{error}</span>
           </div>
         )}
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -114,10 +115,6 @@ export default function LoginPage() {
             </button>
           </div>
         </form>
-        <div>
-          <p>email: vinayak75score@gmail.com </p>
-          <p>pass: passvi</p>
-        </div>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import config from '@/config';
 
 interface User {
   _id: string;
@@ -38,7 +39,7 @@ export default function ProfilePage() {
           return;
         }
 
-        const response = await fetch('http://localhost:5000/api/auth/me', {
+        const response = await fetch(`${config.apiUrl}/auth/me`, {
           headers: {
             'x-auth-token': token
           }
@@ -49,7 +50,7 @@ export default function ProfilePage() {
         }
 
         const userData: User = await response.json();
-        
+
         setFormData({
           name: userData.name,
           location: userData.location,
@@ -86,11 +87,11 @@ export default function ProfilePage() {
 
       // Convert skills string to array
       const skillsArray = skills.split(',').map(skill => skill.trim());
-      
+
       // Convert yearsOfExperience to number
       const yearsExp = parseInt(yearsOfExperience);
 
-      const response = await fetch('http://localhost:5000/api/users/profile', {
+      const response = await fetch(`${config.apiUrl}/users/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -135,19 +136,19 @@ export default function ProfilePage() {
           Update your personal details and preferences
         </p>
       </div>
-      
+
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative m-4" role="alert">
           <span className="block sm:inline">{error}</span>
         </div>
       )}
-      
+
       {success && (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative m-4" role="alert">
           <span className="block sm:inline">{success}</span>
         </div>
       )}
-      
+
       <div className="p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -162,7 +163,7 @@ export default function ProfilePage() {
               onChange={handleChange}
             />
           </div>
-          
+
           <div>
             <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location</label>
             <input
@@ -175,7 +176,7 @@ export default function ProfilePage() {
               onChange={handleChange}
             />
           </div>
-          
+
           <div>
             <label htmlFor="yearsOfExperience" className="block text-sm font-medium text-gray-700">Years of Experience</label>
             <input
@@ -189,7 +190,7 @@ export default function ProfilePage() {
               onChange={handleChange}
             />
           </div>
-          
+
           <div>
             <label htmlFor="skills" className="block text-sm font-medium text-gray-700">Skills (comma separated)</label>
             <input
@@ -203,7 +204,7 @@ export default function ProfilePage() {
             />
             <p className="mt-1 text-sm text-gray-500">Enter your skills separated by commas (e.g., JavaScript, React, Node.js)</p>
           </div>
-          
+
           <div>
             <label htmlFor="preferredJobType" className="block text-sm font-medium text-gray-700">Preferred Job Type</label>
             <select
@@ -219,7 +220,7 @@ export default function ProfilePage() {
               <option value="any">Any</option>
             </select>
           </div>
-          
+
           <div>
             <button
               type="submit"

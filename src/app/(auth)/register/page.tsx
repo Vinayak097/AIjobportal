@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import config from '@/config';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -32,11 +33,11 @@ export default function RegisterPage() {
     try {
       // Convert skills string to array
       const skillsArray = skills.split(',').map(skill => skill.trim());
-      
+
       // Convert yearsOfExperience to number
       const yearsExp = parseInt(yearsOfExperience);
 
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${config.apiUrl}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -60,7 +61,7 @@ export default function RegisterPage() {
 
       // Save token to localStorage
       localStorage.setItem('token', data.token);
-      
+
       // Redirect to dashboard
       router.push('/dashboard');
     } catch (err: any) {
@@ -84,13 +85,13 @@ export default function RegisterPage() {
             </Link>
           </p>
         </div>
-        
+
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             <span className="block sm:inline">{error}</span>
           </div>
         )}
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm space-y-4">
             <div>
@@ -106,7 +107,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
               />
             </div>
-            
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label>
               <input
@@ -121,7 +122,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
               />
             </div>
-            
+
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
               <input
@@ -137,7 +138,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
               />
             </div>
-            
+
             <div>
               <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location</label>
               <input
@@ -151,7 +152,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
               />
             </div>
-            
+
             <div>
               <label htmlFor="yearsOfExperience" className="block text-sm font-medium text-gray-700">Years of Experience</label>
               <input
@@ -166,7 +167,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
               />
             </div>
-            
+
             <div>
               <label htmlFor="skills" className="block text-sm font-medium text-gray-700">Skills (comma separated)</label>
               <input
@@ -180,7 +181,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
               />
             </div>
-            
+
             <div>
               <label htmlFor="preferredJobType" className="block text-sm font-medium text-gray-700">Preferred Job Type</label>
               <select

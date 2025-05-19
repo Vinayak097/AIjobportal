@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import config from '@/config';
 
 interface User {
   _id: string;
@@ -26,7 +27,7 @@ export default function Dashboard() {
           throw new Error('No authentication token found');
         }
 
-        const response = await fetch('http://localhost:5000/api/auth/me', {
+        const response = await fetch(`${config.apiUrl}/auth/me`, {
           headers: {
             'x-auth-token': token
           }
@@ -72,7 +73,7 @@ export default function Dashboard() {
           Your AI-powered job matching platform
         </p>
       </div>
-      
+
       {user && (
         <div className="border-t border-gray-200">
           <dl>
@@ -109,7 +110,7 @@ export default function Dashboard() {
           </dl>
         </div>
       )}
-      
+
       <div className="px-4 py-5 sm:px-6 flex flex-col sm:flex-row gap-4">
         <Link href="/profile" className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           Update Profile

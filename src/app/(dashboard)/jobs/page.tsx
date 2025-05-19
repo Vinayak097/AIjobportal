@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import config from '@/config';
 
 interface Job {
   _id: string;
@@ -41,7 +42,7 @@ export default function JobsPage() {
           throw new Error('No authentication token found');
         }
 
-        const response = await fetch('http://localhost:5000/api/jobs', {
+        const response = await fetch(`${config.apiUrl}/jobs`, {
           headers: {
             'x-auth-token': token
           }
@@ -74,7 +75,7 @@ export default function JobsPage() {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch('http://localhost:5000/api/recommendations', {
+      const response = await fetch(`${config.apiUrl}/recommendations`, {
         headers: {
           'x-auth-token': token
         }
@@ -127,13 +128,13 @@ export default function JobsPage() {
             {loadingRecommendations ? 'Finding matches...' : 'Find My Matches'}
           </button>
         </div>
-        
+
         {recommendationError && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative m-4" role="alert">
             <span className="block sm:inline">{recommendationError}</span>
           </div>
         )}
-        
+
         {recommendations.length > 0 && (
           <div className="p-4 bg-indigo-50 border-b border-gray-200">
             <h4 className="text-lg font-medium text-indigo-800 mb-4">AI Recommended Jobs For You</h4>
@@ -168,7 +169,7 @@ export default function JobsPage() {
             </div>
           </div>
         )}
-        
+
         <div className="p-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {jobs.map((job) => (
